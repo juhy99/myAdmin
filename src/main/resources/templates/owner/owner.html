@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 오너</title>
+	<!--css 및 라이브러리 링크 시작-->
+	<div th:replace="fragment/link :: link"/>
+	<!--css 및 라이브러리 링크 끝-->
+</head>
+<style>
+	.main-content {
+		display:flex;
+		justify-content: end;
+	}
+
+	.search-box {
+		box-sizing: border-box;
+		height: 45px;
+	}
+
+	.search {
+		position: relative;
+		margin: 0;
+		border-radius: 2px;
+		vertical-align: middle;
+		height: 100%;
+		background: transparent;
+		padding: 10px;
+	}
+
+	.search-btn {
+		vertical-align: middle;
+		height: 100%;
+		position: relative;
+		bottom:28px;
+		left:150px;
+		font-size: 12px;
+		background: transparent;
+		border: none;
+		outline : none;
+	}
+	.widget__header{
+		display: flex;
+		justify-content: space-between;
+	}
+
+	th, td {
+		text-align: center;
+	}
+	.page_wrap {
+		padding : 15px;
+		margin-top: 20px;
+	}
+    a.active {
+        background-color:#66cccc;
+        color:#fff;
+        border:1px solid #66cccc;
+    }
+
+    a.disabled{
+        pointer-events: none;
+    }
+</style>
+<body>
+<!--header 시작-->
+<div th:replace="fragment/header :: header"/>
+<!--프로필 시작-->
+<div th:replace="fragment/profile :: profile"/>
+<!--프로필 끝-->
+<!--header 끝-->
+
+<div class="wrapper">
+		<!--owner_nav 시작-->
+    <div th:replace = "fragment/aside_nav :: aside_nav"/>
+		<!--owner_nav 끝-->
+
+        <section class="content">
+			<header class="main-header clearfix">
+				<h1 class="main-header__title">
+					<i class="icon pe-7s-menu"></i>
+					전체 식당 관리자 <small> 조회 및 관리</small>
+				</h1>
+				<div class="main-content">
+					<div class="search-box">
+						<form action="/owner/search" method="GET">
+							<input name="keyword" id="searchShop" class="input-text search" type="text" placeholder="식당 검색">
+							<button class="search-btn">
+								<i class="pe-7s-search"></i>
+							</button>
+						</form>
+					</div>
+				</div>
+			</header> <!--헤더 끝-->
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <article class="widget shadow">
+                            <header class="widget__header">
+                                <h3 class="widget__title">전체 식당 관리자 수 : [[${resAdmins.getTotalElements}]]</h3>
+                            </header>
+                            <div class="widget__content">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>식당이름</th>
+                                            <th>대표</th>
+                                            <th>전화번호</th>
+                                            <th>위치</th>
+                                            <th>비고</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="resAdmin : ${resAdmins}">
+                                            <td style="display: none;" id="resa_userid" th:text="${resAdmin.resaUserid}"></td>
+                                            <td><span th:text="${resAdmin.resaBisName}"></span></td>
+                                            <td th:text="${resAdmin.resaName}"></td>     <!-- 들어가면 상세페이지로 -->
+                                            <td th:text="${resAdmin.resaHp}"></td>
+                                            <td th:text="${resAdmin.resaRegion}"></td>
+                                            <td>
+                                                <a th:href="'/owner/detail/'+${resAdmin.resaBisName}"><button class="btn btn-light btn-xs">상세 보기</button></a>
+                                                <a th:id="${resAdmin.resaUserid}" onclick="deleteRes(this.getAttribute('id'))"><button class="btn btn-red btn-xs">삭제</button></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </article>
+                    </div>
+                </div> <!-- /row -->
+<!--            페이징 처리 시작-->
+            <div class="page_wrap">
+                <div class="page_nation" aria-label="Page navigation example">
+                    <a th:href="@{/owner(page=${resAdmins.number - 1})}"
+                       th:class="'page-prev' + (${resAdmins.number} <= 0 ? ' page-disabled':'')"></a>
+                    <span th:each="pageNumber : ${paginationBarNumbers}">
+                        <a th:text="${pageNumber + 1}" th:href="@{/owner(page=${pageNumber})}"
+                           th:class="(${pageNumber} == ${resAdmins.number} ? 'active' : '')">1</a></span>
+                    <a th:href="@{/owner(page=${resAdmins.number + 1})}" th:class="'page-next' +
+                    (${resAdmins.number} >= ${resAdmins.totalPages - 1} ? '':' page-disabled')"></a>
+                </div>
+            </div>
+			<!--페이징 끝-->
+		<!--footer 시작-->
+		<div th:replace="fragment/footer :: footer"/>
+		<!--footer 끝-->
+    </section>
+</div><!-- /wrapper -->
+
+<!-- Scripts -->
+<!--js 연결 시작-->
+<div th:replace="fragment/js :: js"/>
+<!--js 연결 끝-->
+<script>
+    function deleteRes(resaUserid){
+        console.log(resaUserid);
+        fetch(`http://localhost:7070/api/restAdmin/delete/`+resaUserid, {
+            method: 'DELETE'
+        })
+            .then((res) => {
+                console.log(resaUserid)
+                alert("삭제성공!");
+                location.href='/owner';
+                return;
+            })
+            .then((data) => {
+                console.log(data);
+                return;
+            })
+            .catch((err) => {
+                alert('에러!!');
+                location.reload();
+                return;
+            });
+    }
+</script>
+</body>
+</html>

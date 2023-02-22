@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신고 댓글</title>
+    <!--css 및 라이브러리 링크 시작-->
+    <div th:replace="fragment/link :: link"/>
+    <!--css 및 라이브러리 링크 끝-->
+</head>
+<style>
+    .display {
+        display: block;
+    }
+
+    .none {
+        display: none;
+    }
+     tr, th, td {
+         border: 1px solid #cacacaa1;
+         padding: 14px;
+         font-size: 15px;
+     }
+
+    th {
+        width: 10%;
+        background-color: #a2a2a247;
+        font-weight: 800;
+    }
+</style>
+<body>
+<!--header 시작-->
+<div th:replace="fragment/header :: header"/>
+<!--프로필 시작-->
+<div th:replace="fragment/profile :: profile"/>
+<!--프로필 끝-->
+<!--header 끝-->
+
+<div class="wrapper">
+    <!-- 사이드바 시작 -->
+    <div th:replace="fragment/aside_nav :: aside_nav"/>
+    <!--사이드바 끝-->
+
+    <section class="content">
+        <header class="main-header clearfix">
+        </header> <!--헤더 끝-->
+
+        <div class="row">
+            <div class="col-md-12">
+                <article class="widget widget--tabbed shadow">
+                    <div class="tabs">
+                        <div class="number-entries">
+                            <input class="spinner" name="value" value="5"/>
+                        </div>
+                        <input type="radio" name="t" id="tab2" checked>
+                        <label for="tab2" class="tabs__tab">신고 들어온 댓글</label>
+                        <div class="tabs__content">
+
+                            <!-- 신고들어온 댓글-->
+                            <div class="tabs__content--2">
+                                <div class="media social_msg" style="border: 0;" th:each="comments : ${decComs}">
+                                    <div class="media-body">
+                                        <table style="border: 1px solid #cacacaa1;min-width: 100%;">
+                                            <input type="hidden" id="revIdx" th:value="${comments.revIdx}">
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">댓글번호</th>
+                                                <td id="comidx" th:text="${comments.comIdx}" style="width:42%"></td>
+                                                <th style="width: 8%;">신고번호</th>
+                                                <td th:text="${comments.decIdx}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">댓글 작성자 닉네임</th>
+                                                <td  id="prIdx" th:text="${comments.decNick}" colspan="3"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">댓글 내용</th>
+                                                <td th:text="${comments.comContent}" colspan="3"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">신고 내용</th>
+                                                <td th:text="${comments.decContent}" colspan="3"></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">신고일</th>
+                                                <td th:text="${#temporals.format(comments.regDate, 'yyyy-MM-dd')}" colspan="3"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div style="margin: 15px 0;text-align: right;">
+                                            <button onclick="clicked(this)" class="btn btn-skyblue" style="margin: 0">메세지 보내기</button>
+                                            <button onclick="deletething()" class="btn btn-red" style="margin: 0;width: 111px;">삭제</button>
+                                        </div>
+                                    </div>
+                                    <div class="modal hidden">
+                                        <div class="modal">
+                                            <div class="modal__overlay"></div>
+                                            <div class="modal__contents">
+                                                <div class="modal__header">
+                                                    신고 받은 회원에게 메세지 보내기
+                                                </div>
+                                                <div class="modal__main" style="padding-left: 83px;padding-right: 84px;">
+                                                    <table style="border: 1px solid #cacacaa1;min-width: 100%;">
+                                                        <tbody>
+                                                        <tr>
+                                                            <th scope="row" style="width: 35%;">댓글 작성자</th>
+                                                            <td id="dernick" th:text="${comments.decNick}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row" style="width: 35%;">보내는 관리자</th>
+                                                            <td>캐치테이블</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div>
+                                                        <p>
+                                                            <textarea style="width: 363px;height: 121px;resize: none; margin-top: 11px;border: 1px solid #e9e9e9;" type="text" th:id="'dercontent'+${comments.comIdx}" name="message" placeholder="보낼 메세지를 입력하세요."></textarea>
+                                                        </p>
+                                                    </div>
+                                                    <div style="margin: 15px 0;">
+                                                        <button style="margin: 0;" th:onclick="sendadminmsg([[${comments.comIdx}]],[[${comments.decNick}]])"
+                                                                class="btn btn-skyblue">보내기
+                                                        </button>
+                                                        <button style="margin: 0;width: 67px;" onclick="cclicked(this)" class="btn btn-light"
+                                                                type="button">닫기
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div> <!-- /tabs__content 3 -->
+
+                        </div> <!-- /tabs__content CONTAINER -->
+
+                    </div> <!-- /widget__tabs -->
+
+                </article>
+            </div>
+        </div> <!--/row-->
+        <!--페이징 처리-->
+        <div class="page_wrap">
+            <div class="page_nation" aria-label="Page navigation example">
+                <a th:href="@{/review/comment/report(page=${decComs.number - 1})}"
+                   th:class="'page-prev' + (${decComs.number} <= 0 ? ' page-disabled':'')"></a>
+                <span th:each="pageNumber : ${paginationBarNumbers}">
+                        <a th:text="${pageNumber + 1}" th:href="@{/review/comment/report(page=${pageNumber})}"
+                           th:class="(${pageNumber} == ${decComs.number} ? 'active' : '')">1</a></span>
+                <a th:href="@{/review/comment/report(page=${decComs.number + 1})}" th:class="'page-next' +
+                    (${decComs.number} >= ${decComs.totalPages - 1} ? '':' page-disabled')"></a>
+            </div>
+        </div>
+        <!--페이징 끝-->
+    </section>
+    <!--    footer 시작-->
+    <div th:replace="fragment/footer :: footer"/>
+    <!--    footer 끝-->
+</div> <!-- /wrapper -->
+
+<!--js 연결 시작-->
+<div th:replace="fragment/js :: js"/>
+<!--js 연결 끝-->
+
+<script>
+    function clicked(event) {
+        let dv = event.parentNode.parentNode.parentNode.childNodes[3];
+        console.log(dv)
+        dv.classList.remove("hidden")
+    }
+
+    function cclicked(event) {
+        let dv = event.parentNode.parentNode.parentNode.parentNode.parentNode;
+        console.log(dv)
+        dv.classList.add("hidden")
+    }
+
+
+    function sendadminmsg(comIdx, derNick) {
+        const adminMsg = document.getElementById("dercontent" + comIdx);
+
+
+        if (adminMsg.value == '') {
+            alert("메세지를 입력하세요!");
+            adminMsg.focus();
+            return false;
+        }
+        let data1 = {
+            derNick: derNick,
+            taaContent: adminMsg.value,
+        }
+        $.ajax({
+            url: "http://localhost:7070/api/talkAdmin/msg",
+            type: "GET",
+            dataType: "json",
+            processData: true,
+            contentType: "application/json; charset=UTF-8",
+            data: data1,
+            success: function (result) {
+                if (result) {
+                    console.log(result)
+                    alert('업데이트 성공!');
+                    location.href = '/review/comment/report';
+                    // itemList1.itemList1 = result.data;
+                    // if(!document.querySelector('#check1').innerText){
+                    //     itemList1.boolean1 = true;}
+                } else {
+                    alert("전송된 값 없음");
+                }
+            },
+            error: function () {
+                alert("에러 발생");
+            }
+        });
+    }
+
+    function deletething() {
+        let idx = document.querySelector("#comidx").innerText;
+        let revIdx = document.querySelector("#revIdx").value
+        let data1 = {idx: idx, revIdx: revIdx}
+        if (confirm("해당 유저의 댓글을 삭제하시겠습니까?")) {
+            $.ajax({
+                url: "http://localhost:7070/api/comment/delete",
+                type: "GET",
+                dataType: "json",
+                processData: true,
+                contentType: "application/json; charset=UTF-8",
+                data: data1,
+                success: function (result) {
+                    if (result) {
+                        console.log(result)
+                        alert('삭제!');
+                        location.href = '/review/comment/report';
+                        // itemList1.itemList1 = result.data;
+                        // if(!document.querySelector('#check1').innerText){
+                        //     itemList1.boolean1 = true;}
+                    } else {
+                        alert("전송된 값 없음");
+                    }
+                },
+                error: function () {
+                    alert("에러 발생");
+                }
+            })
+        } else {
+            alert('다시확인해주세요...!')
+
+        }
+
+    }
+</script>
+</body>
+</html>

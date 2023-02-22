@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 상세 정보</title>
+	<!--css 및 라이브러리 링크 시작-->
+	<div th:replace="fragment/link :: link"/>
+	<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<!--css 및 라이브러리 링크 끝-->
+</head>
+<style>
+	.widget__content > p{
+        padding: 6px;
+		font-size: 17px;
+    }
+
+	.widget__content > div {
+		display: flex;
+		margin-bottom: 15px;
+	}
+
+	.widget__content > div > p {
+		width: 100px;
+
+	}
+	.modal__main > div{
+		display: flex;
+		margin-bottom: 15px;
+	}
+	.modal__main > div > p{
+		margin-right: 60px;
+	}
+	tr, th, td {
+		border: 1px solid #cacacaa1;
+		padding: 14px;
+		font-size: 15px;
+	}
+
+	th {
+		width: 7%;
+		background-color: #a2a2a247;
+		font-weight: 800;
+	}
+</style>
+<body>
+<!--header 시작-->
+<div th:replace="fragment/header :: header"/>
+<!--프로필 시작-->
+<div th:replace="fragment/profile :: profile"/>
+<!--프로필 끝-->
+<!--header 끝-->
+
+<div class="wrapper">
+	<!-- 사이드바 시작 -->
+	<div th:replace="fragment/aside_nav :: aside_nav"/>
+	<!--사이드바 끝-->
+
+        <section class="content">
+			<header class="main-header clearfix">
+				<h1 class="main-header__title">
+					<i class="icon pe-7s-menu"></i>
+					회원 <small>상세 정보</small>
+				</h1>
+				<div class="main-header__date">
+					<i class="icon pe-7s-date"></i>
+					<span class="date"></span>
+				</div>
+			</header>
+
+            <!--메인 컨텐츠 시작-->
+        <div class="row">
+
+			<div class="col-md-12">
+				<article class="widget shadow" style="padding-bottom: 56px;">
+					<div class="widget__content">
+						<table style="border: 1px solid #cacacaa1;min-width: 100%;">
+							<tbody>
+							<tr>
+								<th scope="row" id="prIdx">회원 번호</th>
+								<td th:text="${profile.prIdx}"></td>
+
+							</tr>
+							<tr>
+								<th scope="row">이름</th>
+								<td id="penBisName" th:text="${profile.prName}"></td>
+							</tr>
+							<tr>
+								<th scope="row">닉네임</th>
+								<td th:text="${profile.prNick}"></td>
+							</tr>
+							<tr>
+								<th scope="row">핸드폰 번호</th>
+								<td th:text="${profile.prHp}"></td>
+							</tr>
+							<tr>
+								<th scope="row">선호 지역</th>
+								<td th:text="${profile.prRegion}"></td>
+							</tr>
+							<tr>
+								<th scope="row">블락상태</th>
+								<td th:if="${profile.prBlock}==true">블락</td>
+								<td th:if="${profile.prBlock}==false">예약가능</td>
+							</tr>
+							<tr style="margin-bottom: 25px;">
+								<th scope="row">가입 날짜</th>
+								<td th:text="${#temporals.format(profile.regDate, 'yyyy-MM-dd')}"></td>
+							</tr>
+							</tbody>
+						</table>
+
+						<div style="flex-direction: column;border-top: 1px solid #bdbdbdb0;padding-top: 25px;">
+                        	<p style="font-size: 17px;margin-bottom: 10px;">관리자메모</p>
+                        	<p style="width: 100%">
+								<textarea style="height: 300px;resize: none;" id="prMemo" class="textarea" row="8" cols="12" th:text ="${profile.prMemo}" placeholder="고객 유의 사항 혹은 관리자메모를 입력하세요."></textarea>
+							</p>
+						</div>
+<!--						<table class="table">-->
+<!--							<thead>-->
+<!--							<tr>-->
+<!--								<th>노쇼</th>-->
+<!--							</tr>-->
+<!--							</thead>-->
+<!--							<tr>-->
+<!--								<td th:text="${profile.prNoshow}"></td>-->
+<!--							</tr>-->
+<!--						</table>-->
+						<button class="btn btn-light pull-right" type="button" onclick="history.back();">뒤로가기</button>
+						<button class="btn btn-light pull-right" type="button" onclick="sendMemo()">관리자 메모 등록</button>
+                        <button class="other__modal btn btn-red pull-right" type="button">노쇼 블락</button>
+						<div class="clearfix"></div>
+					</div>
+
+
+				</article>
+			</div>
+
+    </div> <!-- /row -->
+<div th:replace="fragment/user_modal :: user_modal"/>
+<div th:replace="fragment/noShow_modal :: noShow_modal"/>
+
+</section>
+<!--footer 시작-->
+<div th:replace="fragment/footer :: footer"/>
+<!--footer 끝-->
+
+</div> <!-- /wrapper -->
+
+<!--js 연결 시작-->
+<div th:replace="fragment/js :: js"/>
+
+<!--js 연결 끝-->
+
+<script src="/js/prMemo.js"></script>
+<script src="/js/noShow.js"></script>
+<script src="/js/other_modal.js"/>
+<script>
+	function sendPoint() {
+		const prIdx = document.getElementById("pointidx").innerText;
+		const pointMsg = document.getElementById("pointmsg");
+
+		if(pointMsg.value == '') {
+		alert("메세지를 입력하세요!");
+		pointMsg.focus();
+		return false;
+	}
+		let data1 = {
+		idx : prIdx,
+		msg : pointMsg.value}
+
+		$.ajax({
+		url: "http://localhost:7070/api/talkAdmin/point",
+		type: "GET",
+		dataType: "json",
+		processData: true,
+		contentType: "application/json; charset=UTF-8",
+		data: data1,
+		success: function(result) {
+		if (result) {
+		console.log(result)
+		alert('업데이트 성공!');
+		// itemList1.itemList1 = result.data;
+		// if(!document.querySelector('#check1').innerText){
+		//     itemList1.boolean1 = true;}
+	} else {
+		alert("전송된 값 없음");
+	}
+	},
+		error: function() {
+		alert("에러 발생");
+	}
+	});
+	}
+</script>
+</body>
+</html>

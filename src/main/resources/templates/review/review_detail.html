@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전체 리뷰</title>
+    <!--css 및 라이브러리 링크 시작-->
+    <div th:replace="fragment/link :: link"/>
+    <!--css 및 라이브러리 링크 끝-->
+</head>
+<style>
+    .value {
+        width: 400px;
+    }
+
+    p {
+        padding: 6px;
+    }
+    .widget__content > div {
+        display: flex;
+    }
+    .widget__content > div > p {
+        width: 75px;
+    }
+</style>
+<body>
+<!--header 시작-->
+<div th:replace="fragment/header :: header"/>
+<!--프로필 시작-->
+<div th:replace="fragment/profile :: profile"/>
+<!--프로필 끝-->
+<!--header 끝-->
+
+<div class="wrapper">
+    <!-- 사이드바 시작 -->
+    <div th:replace="fragment/aside_nav :: aside_nav"/>
+    <!--사이드바 끝-->
+
+    <section class="content">
+        <!-- 컨텐츠 헤더 -->
+        <header class="main-header clearfix">
+            <h1 class="main-header__title">
+                <i class="icon pe-7s-home"></i>
+                리뷰 상세 <small>조회 및 관리</small>
+            </h1>
+            <div class="main-header__date">
+                <i class="icon pe-7s-date"></i>
+                <span class="date"></span>
+            </div>
+        </header> <!--헤더 끝-->
+        <div class="row">
+
+            <div class="col-md-12">
+                <article class="widget shadow" style="padding-bottom: 60px;">
+                    <div class="widget__content">
+                        <div>
+                            <p>식당</p>
+                            <input type="text" class="input-text value" th:field="${review.resaBisName}" readonly/>
+                        </div>
+                        <div>
+                            <p>내용</p>
+                            <input type="text" class="input-text value" th:field="${review.revContent}" readonly/>
+                        </div>
+                        <div>
+                            <p>좋아요</p>
+                            <input type="text" class="input-text value" th:field="${review.revLike}" readonly>
+                        </div>
+                        <div>
+                            <p>평점</p>
+                            <input type="text" class="input-text value" th:field="${review.revScore}" readonly>
+                        </div>
+                        <div>
+                            <p>등록일</p>
+                            <span style="line-height: 33px;">[[${#temporals.format(review.regDate, 'yyyy-MM-dd')}]]</span>
+                        </div>
+                        <button class="btn btn-light pull-right" type="button" onclick="history.back()">뒤로가기</button>
+                        <div class="clearfix"></div>
+                    </div>
+
+
+                </article>
+            </div>
+        </div> <!--row-->
+    </section>
+    <!--    footer 시작-->
+    <div th:replace="fragment/footer :: footer"/>
+    <!--    footer 끝-->
+
+</div> <!-- /wrapper -->
+
+<!--js 연결 시작-->
+<div th:replace="fragment/js :: js"/>
+<!--js 연결 끝-->
+</body>
+</html>

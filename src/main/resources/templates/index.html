@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>캐치테이블 관리자</title>
+
+	<!--css 및 라이브러리 링크 시작-->
+	<div th:replace="fragment/link :: link"/>
+	<!--css 및 라이브러리 링크 끝-->
+
+</head>
+<style>
+	.card {
+		margin-top : 25px;
+	}
+	.showme{
+		max-height: 500px;
+	}
+</style>
+<body>
+<!--header 시작-->
+<div th:replace="fragment/header :: header"/>
+<!--프로필 시작-->
+<div th:replace="fragment/profile :: profile"/>
+<!--프로필 끝-->
+<!--header 끝-->
+
+<div class="wrapper">
+	<!-- 사이드바 시작 -->
+<div th:replace="fragment/aside_nav :: aside_nav"/>
+	<!--사이드바 끝-->
+
+	<section class="content">
+
+		<!-- 1번째 컨텐츠 -->
+		<div class="row shadow">
+			<div class="main-stats__stat col-lg-3 col-md-12 col-sm-12">
+				<h3 class="stat__title">Total Users</h3>
+				<div class="stat__number"><span th:text="${totuser}"></span></div>
+				<div class="progress">
+					<div class="progress-bar progress-bar--skyblue" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"></div>
+				</div> <!-- /progress -->
+				<p class="stat__details">
+					<i class="icon pe-7s-angle-up color--skyblue"></i>
+					<strong>27%</strong> more than last month
+				</p>
+			</div> <!-- /col -->
+
+			<div class="main-stats__stat col-lg-3 col-md-12 col-sm-12">
+				<h3 class="stat__title">Total Reserve</h3>
+				<div class="stat__number"><span th:text="${totrev}"></span></div>
+				<div class="progress">
+					<div class="progress-bar progress-bar--anzac" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;"></div>
+				</div> <!-- /progress -->
+				<p class="stat__details">
+					<i class="icon pe-7s-angle-down color--anzac"></i>
+					<strong>15%</strong> less than last month
+				</p>
+			</div> <!-- /col -->
+
+			<div class="main-stats__stat col-lg-3 col-md-12 col-sm-12">
+				<h3 class="stat__title">Total Restaurant</h3>
+				<div class="stat__number"><span th:text="${totres}"></span></div>
+				<div class="progress">
+					<div class="progress-bar progress-bar--green" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%;"></div>
+				</div> <!-- /progress -->
+				<p class="stat__details">
+					<i class="icon pe-7s-angle-up color--green"></i>
+					<strong>38%</strong> more than last month
+				</p>
+			</div> <!-- /col -->
+
+			<div class="main-stats__stat col-lg-3 col-md-12 col-sm-12">
+				<h3 class="stat__title">Total Review</h3>
+				<div class="stat__number"><span th:text="${totreview}"></span></div>
+				<div class="progress">
+					<div class="progress-bar progress-bar--red" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
+				</div> <!-- /progress -->
+				<p class="stat__details">
+					<i class="icon pe-7s-angle-down color--red"></i>
+					<strong>23%</strong> less than last month
+				</p>
+			</div> <!-- /col -->
+		</div> <!-- row -->
+		<!-- 메인 상단 회원,식당 수 끝-->
+
+		<!-- chart -->
+		<div class="row">
+			<div class="col-md-7">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold text-primary">월 별 예약 현황(취소 노쇼건수까지 모두포함)</h6>
+					</div>
+					<div class="card-body">
+						<div class="chart-area">
+							<canvas id="myAreaChart"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /예약 현황 끝 -->
+			<!--식당별 rank-->
+			<div class="col-md-5">
+				<div style="margin-top:25px; margin-left: 50px">
+					<div th:replace="fragment/rank :: rank"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">	<!--리뷰 간략히-->
+			<div class="col-md-7">
+				<article class="widget widget--tabbed shadow">
+					<div class="tabs">
+						<input type="radio" name="t" id="tab1" checked>
+						<label for="tab1" class="tabs__tab">전체 리뷰</label>
+						<input type="radio" name="t" id="tab2">
+						<label for="tab2" class="tabs__tab">신고 들어온 리뷰</label>
+						<input type="radio" name="t" id="tab3">
+						<label for="tab3" class="tabs__tab">신고 들어온 댓글</label>
+						<div class="tabs__content">
+							<!-- 전체 리뷰 -->
+							<div class="tabs__content--1">
+								<div class="media social_msg" th:each="reviews:${reviews}">
+									<div class="media-body">
+										<h4 class="media-heading social_msg__heading">방문유저 : <span th:text="${reviews.Profile.PrNick}"></span></h4>
+										<h4 class="media-heading social_msg__heading">방문식당 : <span th:text="${reviews.ResAdmin.ResaBisName}"></span></h4>
+										<p class="social_msg__msg" th:text="${reviews.revContent}"></p>
+										<small class="social_msg__meta" th:text="${reviews.regDate}"></small>
+									</div>
+								</div><!-- /social-msg -->
+								<div class="media social_msg">
+									<div class="media-body">
+										<a href="/review" class="social_msg__msg">리뷰 더보기</a>
+									</div>
+								</div>
+
+							</div> <!-- /전체 리뷰끝 -->
+
+							<!-- 신고들어온 리뷰 -->
+							<div class="tabs__content--2">
+								<div class="media social_msg" th:each="decrev:${decrev}">
+									<div class="media-body">
+										<h4 class="media-heading social_msg__heading"> 신고당한 유저 : <span th:text="${decrev.derNick}"></span></h4>
+										<p class="social_msg__msg">신고제목 : <span th:text="${decrev.derTitle}"></span></p>
+										<p class="social_msg__msg">신고내용 : <span th:text="${decrev.derContent}"></span></p>
+										<small class="social_msg__meta" th:text="${decrev.regDate}"></small>
+									</div>
+								</div> <!-- /social-msg -->
+								<div class="media social_msg">
+									<div class="media-body">
+										<a href="/review/report" class="social_msg__msg">리뷰신고리스트 더보기</a>
+									</div>
+								</div>
+							</div> <!-- /신고 들어온 리뷰 끝-->
+
+							<!-- 신고 들어온 댓글 시작 -->
+							<div class="tabs__content--3">
+								<div class="media social_msg" th:each="decCom:${decCom}">
+									<div class="media-body">
+										<h4 class="media-heading social_msg__heading">신고당한 유저 : <span th:text="${decCom.decNick}"></span></h4>
+										<p class="social_msg__msg">신고제목 : <span th:text="${decCom.decTitle}"></span></p>
+										<p class="social_msg__msg">신고내용 : <span th:text="${decCom.decContent}"></span></p>
+										<small class="social_msg__meta" th:text="${decCom.regDate}"></small>
+									</div>
+								</div> <!-- /social-msg -->
+								<div class="media social_msg">
+									<div class="media-body">
+										<a href="/review/comment/report" class="social_msg__msg">댓글신고리스트 더보기</a>
+									</div>
+								</div>
+							</div> <!-- /신고 들어온 댓글 끝 -->
+
+						</div> <!-- /tabs__content CONTAINER -->
+
+					</div> <!-- /widget__tabs -->
+
+				</article>
+			</div>
+
+
+			<div class="col-md-5">  <!--유저 간략히-->
+				<article class="widget no-padding--lr shadow">
+					<header class="widget__header">
+						<h3 class="widget__title">Total users / <span th:text="${totuser}"></span></h3>
+						<div class="widget__config">
+						</div>
+					</header>
+					<div class="widget__content" th:each="profile : ${profile}">
+						<div class="media user user--added">
+							<div class="media-body">
+								<h4 class="media-heading user__name"><span th:text="${profile.prNick}"></span>(<span th:text="${profile.prName}"></span>)</h4>
+								<small class="user__location"><i class="pe-7f-map-marker"></i><span th:text="${profile.prRegion}"></span></small>
+<!--								<input type="checkbox" class="btn-more-check" id="more1">-->
+<!--								<label class="c-btn&#45;&#45;more" for="more1"></label>-->
+								<button onclick="clicked(this)" class="btn-more-check"
+								style="border: none; float: right;">+</button>
+
+								<div class="accordion__details">
+									<p>핸드폰 번호 <span><a th:text="${profile.prHp}"></a></span></p>
+
+									<p>관리자 메모<span class="btn-badge bg--orange" th:text="${profile.prMemo}"></span></p>
+									<button onclick="cclicked(this)" style="border: none; width: 100%">-</button>
+								</div>
+							</div>
+						</div> <!-- /user -->
+					</div> <!-- /user 끝 -->
+					<div class="user__more">
+						<a href="/user" id="loadmore"><i class="pe-7s-plus"></i>회원 상세히 보기</a>
+					</div>
+				</article>
+			</div>
+
+		</div> <!-- /row -->
+	</section>
+<!--footer-->
+<div th:replace="fragment/footer :: footer"/>
+<!--footer 끝-->
+
+</div> <!-- /wrapper -->
+
+<!--js 연결 시작-->
+<div th:replace="fragment/js :: js"/>
+<!--js 연결 끝-->
+<script>
+	function clicked(event){
+		let dv = event.parentNode.childNodes[11];
+		console.log(dv)
+		dv.classList.add("showme")
+	}
+	function cclicked(event){
+		let dv = event.parentNode;
+		dv.classList.remove("showme")
+	}
+</script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	let rev1 = /*[[ ${rev1} ]]*/;
+	let rev2 = /*[[ ${rev2} ]]*/;
+	let rev3 = /*[[ ${rev3} ]]*/;
+	let rev4 = /*[[ ${rev4} ]]*/;
+	let rev5 = /*[[ ${rev5} ]]*/;
+	let rev6 = /*[[ ${rev6} ]]*/;
+	let rev7 = /*[[ ${rev7} ]]*/;
+	let rev8 = /*[[ ${rev8} ]]*/;
+	let rev9 = /*[[ ${rev9} ]]*/;
+	let rev10 = /*[[ ${rev10} ]]*/;
+	let rev11 = /*[[ ${rev11} ]]*/;
+	let rev12 = /*[[ ${rev12} ]]*/;
+	/*]]*/
+	console.log(rev1)
+	console.log(rev2)
+	// Set new default font family and font color to mimic Bootstrap's default styling
+	Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+	Chart.defaults.global.defaultFontColor = '#858796';
+
+	function number_format(number, decimals, dec_point, thousands_sep) {
+		// *     example: number_format(1234.56, 2, ',', ' ');
+		// *     return: '1 234,56'
+		number = (number + '').replace(',', '').replace(' ', '');
+		var n = !isFinite(+number) ? 0 : +number,
+				prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+				sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+				dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+				s = '',
+				toFixedFix = function(n, prec) {
+					var k = Math.pow(10, prec);
+					return '' + Math.round(n * k) / k;
+				};
+		// Fix for IE parseFloat(0.55).toFixed(0) = 0;
+		s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+		if (s[0].length > 3) {
+			s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+		}
+		if ((s[1] || '').length < prec) {
+			s[1] = s[1] || '';
+			s[1] += new Array(prec - s[1].length + 1).join('0');
+		}
+		return s.join(dec);
+	}
+
+	// Area Chart Example
+	var ctx = document.getElementById("myAreaChart");
+	var myLineChart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			datasets: [{
+				label: "Earnings",
+				lineTension: 0.3,
+				backgroundColor: "rgba(78, 115, 223, 0.05)",
+				borderColor: "rgba(78, 115, 223, 1)",
+				pointRadius: 3,
+				pointBackgroundColor: "rgba(78, 115, 223, 1)",
+				pointBorderColor: "rgba(78, 115, 223, 1)",
+				pointHoverRadius: 3,
+				pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+				pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+				pointHitRadius: 10,
+				pointBorderWidth: 2,
+				data: [rev1,rev2,rev3,rev4,rev5,rev6,rev7,rev8,rev9,rev10,rev11,rev12],
+			}],
+		},
+		options: {
+			maintainAspectRatio: false,
+			layout: {
+				padding: {
+					left: 10,
+					right: 25,
+					top: 25,
+					bottom: 0
+				}
+			},
+			scales: {
+				xAxes: [{
+					time: {
+						unit: 'date'
+					},
+					gridLines: {
+						display: false,
+						drawBorder: false
+					},
+					ticks: {
+						maxTicksLimit: 7
+					}
+				}],
+				yAxes: [{
+					ticks: {
+						maxTicksLimit: 5,
+						padding: 10,
+						// Include a dollar sign in the ticks
+						callback: function(value, index, values) {
+							return number_format(value);
+						}
+					},
+					gridLines: {
+						color: "rgb(234, 236, 244)",
+						zeroLineColor: "rgb(234, 236, 244)",
+						drawBorder: false,
+						borderDash: [2],
+						zeroLineBorderDash: [2]
+					}
+				}],
+			},
+			legend: {
+				display: false
+			},
+			tooltips: {
+				backgroundColor: "rgb(255,255,255)",
+				bodyFontColor: "#858796",
+				titleMarginBottom: 10,
+				titleFontColor: '#6e707e',
+				titleFontSize: 14,
+				borderColor: '#dddfeb',
+				borderWidth: 1,
+				xPadding: 15,
+				yPadding: 15,
+				displayColors: false,
+				intersect: false,
+				mode: 'index',
+				caretPadding: 10,
+				callbacks: {
+					label: function(tooltipItem, chart) {
+						var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+						return datasetLabel +  " " + number_format(tooltipItem.yLabel);
+					}
+				}
+			}
+		}
+	});
+</script>
+</body>
+</html>

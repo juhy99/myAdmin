@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오너 상세</title>
+	<!--css 및 라이브러리 링크 시작-->
+	<div th:replace="fragment/link :: link"/>
+	<!--css 및 라이브러리 링크 끝-->
+</head>
+<style>
+    .value {
+        width: 400px;
+    }
+    .memo {
+        height: 200px;
+    }
+    .contents {
+		padding: 15px;
+	}
+	tr, th, td {
+		border: 1px solid #cacacaa1;
+		padding: 14px;
+		font-size: 15px;
+	}
+
+	th {
+		width: 8%;
+		background-color: #a2a2a247;
+		font-weight: 800;
+	}
+</style>
+<body>
+<!--header 시작-->
+<div th:replace="fragment/header :: header"/>
+<!--프로필 시작-->
+<div th:replace="fragment/profile :: profile"/>
+<!--프로필 끝-->
+<!--header 끝-->
+
+
+<div class="wrapper">
+	<!--owner_nav 시작-->
+	<div th:replace = "fragment/aside_nav :: aside_nav"/>
+	<!--owner_nav 끝-->
+
+        <section class="content">
+			<header class="main-header clearfix">
+				<h1 class="main-header__title">
+					<i class="icon pe-7s-menu"></i>
+					식당 관리자 <small>상세 정보</small>
+				</h1>
+				<div class="main-header__date">
+					<i class="icon pe-7s-date"></i>
+					<span class="date"></span>
+				</div>
+			</header>
+        <div class="row">
+
+			<div class="col-md-12">
+				<article class="widget shadow">
+					<header class="widget__header">
+						<h3 class="widget__title" th:text="${resadmin.resaBisName}">스시도온</h3>
+					</header>
+					<table style="border: 1px solid #cacacaa1;min-width: 100%;margin-bottom: 20px;">
+						<tbody>
+						<tr>
+							<th scope="row" id="prIdx">대표</th>
+							<td th:text="${resadmin.resaName}" colspan='3'></td>
+
+						</tr>
+						<tr>
+							<th scope="row">ID</th>
+							<td id="penBisName" th:text="${resadmin.resaUserid}" colspan='3'></td>
+						</tr>
+						<tr>
+							<th scope="row">PW</th>
+							<td th:text="${resadmin.resaUserpw}" colspan='3'></td>
+						</tr>
+						<tr>
+							<th scope="row">핸드폰 번호</th>
+							<td th:text="${resadmin.resaHp}" colspan='3'></td>
+						</tr>
+						<tr>
+							<th scope="row">위치</th>
+							<td th:text="${resadmin.resaRegion}" colspan='3'></td>
+						</tr>
+						<tr>
+							<th scope="row">총 예약 현황</th>
+							<td th:text="${reserve}" style="width: 42%"></td>
+							<td style="width: 8%;background-color: #a2a2a247;font-weight: 800">예약 취소 현황</td>
+							<td th:text="${cancel}"></td>
+						</tr>
+						</tbody>
+					</table>
+
+					<div class="widget__content">
+                        <button class="btn btn-red pull-right"
+								th:id="${resadmin.resaUserid}"
+								onclick="deleteRes(this.getAttribute('id'))">식당 삭제</button>
+<!--                        <button class="modal__open btn btn-light pull-right" >메시지 보내기</button>-->
+						<button class="btn btn-light pull-right" onclick="backto()">뒤로가기</button>
+						<div class="clearfix"></div>
+					</div>
+					<div class="modal hidden">
+						<div class="modal">
+							<div class="modal__overlay"></div>
+							<div class="modal__contents">
+								<div class="modal__header">
+									식당관리자에게 메세지보내기
+								</div>
+								<div class="modal__main">
+									<p>식당 이름 : <span id="bis-name" th:text="${resadmin.resaBisName}"></span></p>
+									<p>대표 이름 : <span th:text="${resadmin.resaName}"></span></p>
+									<p>식당 번호 : <span th:text="${resadmin.resaHp}"></span></p>
+									<p>보내는 관리자 : 캐치테이블</p>
+									<p><input type="text" class="input-text message" id="adminMsg"></p>
+									<div>
+										<button class="btn btn-skyblue" onclick="sendadminmsg()" type="button">보내기</button>
+										<button class="btn btn-light close_button" type="button">닫기</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</article>
+			</div>
+		</div>
+        </section>
+    </div> <!-- /row -->
+</section>
+<!--footer 시작-->
+<div th:replace="fragment/footer :: footer"/>
+<!--footer 끝-->
+<!--<div th:replace="fragment/new_pending :: owner_modal"/>-->
+</div> <!-- /wrapper -->
+
+<!-- Scripts -->
+<!--js 연결 시작-->
+<div th:replace="fragment/js :: js"/>
+<!--js 연결 끝-->
+<script>
+		function deleteRes(resaUserid){
+		console.log(resaUserid);
+		fetch(`http://localhost:7070/api/restAdmin/delete/`+resaUserid, {
+		method: 'DELETE'
+	})
+		.then((res) => {
+		console.log(resaUserid)
+		alert("삭제성공!");
+		location.href='/owner';
+		return;
+	})
+		.then((data) => {
+		console.log(data);
+		return;
+	})
+		.catch((err) => {
+		alert('에러!!');
+		location.reload();
+		return;
+	});
+	}
+
+		function sendadminmsg() {
+			const bisName = document.getElementById("bis-name").innerText;
+			const adminMsg = document.getElementById("adminMsg");
+
+			if(adminMsg.value == '') {
+				alert("메세지를 입력하세요!");
+				adminMsg.focus();
+				return false;
+			}
+			let data1 = {
+				name : bisName,
+				msg : adminMsg.value,}
+			$.ajax({
+				url: "http://localhost:7070/api/talkAdmin/adminmsg",
+				type: "GET",
+				dataType: "json",
+				processData: true,
+				contentType: "application/json; charset=UTF-8",
+				data: data1,
+				success: function(result) {
+					if (result) {
+						console.log(result)
+						alert('업데이트 성공!');
+						location.href='/owner';
+						// itemList1.itemList1 = result.data;
+						// if(!document.querySelector('#check1').innerText){
+						//     itemList1.boolean1 = true;}
+					} else {
+						alert("전송된 값 없음");
+					}
+				},
+				error: function() {
+					alert("에러 발생");
+				}
+			});}
+
+		function backto(){
+			history.back();
+		}
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>입점 문의 상세</title>
+	<!--css 및 라이브러리 링크 시작-->
+	<div th:replace="fragment/link :: link"/>
+	<!--css 및 라이브러리 링크 끝-->
+</head>
+<style>
+    .value {
+        width: 400px;
+		height: 42px;
+    }
+    .memo {
+        height: 200px;
+    }
+    .contents {
+		padding: 15px;
+	}
+	.widget__content > div {
+		display: flex;
+	}
+
+	.widget__content > div > p {
+		width: 127px;
+		line-height: 41px;
+	}
+
+
+
+</style>
+<body>
+<!--header 시작-->
+<div th:replace="fragment/header :: header"/>
+<!--프로필 시작-->
+<div th:replace="fragment/profile :: profile"/>
+<!--프로필 끝-->
+<!--header 끝-->
+
+
+<div class="wrapper">
+	<!--owner_nav 시작-->
+	<div th:replace = "fragment/aside_nav :: aside_nav"/>
+	<!--owner_nav 끝-->
+
+        <section class="content">
+			<header class="main-header clearfix">
+				<h1 class="main-header__title">
+					<i class="icon pe-7s-menu"></i>
+					입점 문의 <small>식당 조회 및 관리</small>
+				</h1>
+				<div class="main-header__date">
+					<i class="icon pe-7s-date"></i>
+					<span class="date"></span>
+				</div>
+			</header>
+        <div class="row">
+			<div class="col-md-12">
+				<article class="widget shadow">
+				<form>
+					<header class="widget__header">
+						<p class="widget__title" id="resa_bis_name" th:text="${owner.penBisName}"></p>
+					</header>
+
+					<div class="widget__content">
+						<div style="display: flex">
+							<p>문의자</p>
+							<input type="text" id="resa_name" class="input-text value" th:field="${owner.penName}" readonly/>
+						</div>
+						<div>
+							<p>문의자 번호</p>
+							<input id="resa_hp" type="text" class="input-text value" th:field="${owner.penHp}" readonly/>
+						</div>
+						<div>
+							<p>식당 지역</p>
+							<input id="resa_region" type="text" class="input-text value" th:field="${owner.penRegion}" readonly/>
+
+						</div>
+						<div>
+							<p>매장 분야</p>
+							<input type="text" class="input-text value" th:field="${owner.penFoodtype}" readonly/>
+						</div>
+						<div>
+							<p>발급 해줄 ID</p>
+							<input id="resa_userid" type="text" class="input-text value" placeholder="아이디를 입력하세요">
+						</div>
+						<div>
+							<p>초기 비밀번호</p>
+							<input id="resa_userpw" type="text" class="input-text value" value="1234" readonly>
+						</div>
+						<div style="display:flex;  justify-content: right;">
+							<button id="registRestBtn" class="btn btn-skyblue" type="button">식당 등록</button>
+							<a class="btn btn-light" type="button" href="javascript:history.back();">뒤로 가기</a>
+						</div>
+						</div>
+					</form>
+				</article>
+			</div>
+		</div>
+    </section>
+    </div> <!-- /row -->
+</section>
+	<!--footer 시작-->
+	<div th:replace="fragment/footer :: footer"/>
+	<!--footer 끝-->
+<!--	<div th:replace="fragment/new_pending :: new_pending"/>-->
+ <!-- /wrapper -->
+
+
+	<!--js 연결 시작-->
+<script src="/js/registerRest.js"></script>
+<div th:replace="fragment/js :: js"/>
+<!--<script src="/js/pending.js"></script>-->
+	<!--js 연결 끝-->
+
+
+</body>
+</html>
