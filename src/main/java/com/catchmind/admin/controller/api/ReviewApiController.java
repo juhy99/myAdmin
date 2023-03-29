@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/review")    // http://localhost:7070/api/restAdmin
+@RequestMapping("/api/review")    // http://52.79.146.68:7070/api/restAdmin
 @RequiredArgsConstructor
 public class ReviewApiController extends CrudController<ReviewApiRequest, ReviewApiResponse, Review> {
     private final ReviewLogicService reviewLogicService;

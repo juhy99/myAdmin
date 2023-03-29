@@ -25,7 +25,7 @@ function updateit(){
     }
 
 
-    fetch('http://localhost:7070/api/update', {
+    fetch('http://52.79.146.68:7070/api/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

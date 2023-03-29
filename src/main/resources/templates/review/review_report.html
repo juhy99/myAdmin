@@ -188,7 +188,7 @@
         }
         let data1 = {derNick: derNick, taaContent: taaContent.value}
         $.ajax({
-            url: "http://localhost:7070/api/talkAdmin/msg",
+            url: "http://52.79.146.68:7070/api/talkAdmin/msg",
             type: "GET",
             dataType: "json",
             processData: true,
@@ -216,7 +216,7 @@
         }
         if (confirm("해당 유저의 리뷰를 삭제하시겠습니까?")) {
             $.ajax({
-                url: "http://localhost:7070/api/review/delete",
+                url: "http://52.79.146.68:7070/api/review/delete",
                 type: "GET",
                 dataType: "json",
                 processData: true,

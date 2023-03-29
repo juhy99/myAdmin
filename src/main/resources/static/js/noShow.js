@@ -19,7 +19,7 @@ function sendNoshow() {
         msg : noShowMsg.value,
         status : statusblock}
     $.ajax({
-        url: "http://localhost:7070/api/talkAdmin/noShow",
+        url: "http://52.79.146.68:7070/api/talkAdmin/noShow",
         type: "GET",
         dataType: "json",
         processData: true,
@@ -43,7 +43,7 @@ function sendNoshow() {
     });
 
     $.ajax({
-        url: "http://localhost:7070/user",
+        url: "http://52.79.146.68:7070/user",
         type: "GET",
         // processData: true,
         // contentType: "application/json; charset=UTF-8",
@@ -64,7 +64,7 @@ function sendNoshow() {
         }
     });
 
-    // fetch("http://localhost:7070/api/talkAdmin/noShow", {
+    // fetch("http://52.79.146.68:7070/api/talkAdmin/noShow", {
     //     method: "POST",
     //     headers: {'Content-Type': 'application/json'},
     //     body: JSON.stringify({

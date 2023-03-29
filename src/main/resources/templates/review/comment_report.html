@@ -193,7 +193,7 @@
             taaContent: adminMsg.value,
         }
         $.ajax({
-            url: "http://localhost:7070/api/talkAdmin/msg",
+            url: "http://52.79.146.68:7070/api/talkAdmin/msg",
             type: "GET",
             dataType: "json",
             processData: true,
@@ -223,7 +223,7 @@
         let data1 = {idx: idx, revIdx: revIdx}
         if (confirm("해당 유저의 댓글을 삭제하시겠습니까?")) {
             $.ajax({
-                url: "http://localhost:7070/api/comment/delete",
+                url: "http://52.79.146.68:7070/api/comment/delete",
                 type: "GET",
                 dataType: "json",
                 processData: true,

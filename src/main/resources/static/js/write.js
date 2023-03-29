@@ -22,7 +22,7 @@ function sendit(){
 
 
 
-    fetch('http://localhost:7070/api/notice', {
+    fetch('http://52.79.146.68:7070/api/notice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

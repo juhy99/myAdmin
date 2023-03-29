@@ -25,13 +25,13 @@ public class ImprovementApiController extends CrudController<ImpApiRequest, ImpA
 
 
     @Override
-    @GetMapping("{impIdx}") // http://localhost:8888/api/user/{id} (get)
+    @GetMapping("{impIdx}") // http://52.79.146.68:8888/api/user/{id} (get)
     public Header<ImpApiResponse> read(@PathVariable(name="impIdx") Long id) {
         return impApiLogicService.read(id);
     }
 
     @Override
-    @PostMapping ("{impIdx}") // http://localhost:9999/api/
+    @PostMapping ("{impIdx}") // http://52.79.146.68:9999/api/
     public Header<ImpApiResponse> update(@RequestBody Header<ImpApiRequest> request) {
         System.out.println("requestgetdata: " + request.getData());
         return impApiLogicService.update(request);

@@ -47,7 +47,7 @@ public class PageController {
         String userid = null;
         String name = null;
         if(session == null) {
-            return new ModelAndView("/login");
+            return new ModelAndView("login");
         } else {
             userid= (String)session.getAttribute("userid");
             name= (String)session.getAttribute("name");
@@ -84,7 +84,7 @@ public class PageController {
         String rank5name = ranking.get(4).getPrNick();
         String rank5count = String.valueOf(ranking.get(4).getPrReview());
 
-        return new ModelAndView("/index")
+        return new ModelAndView("index")
                 .addObject("userid", userid)
                 .addObject("name", name)
                 .addObject("reviews",reviews)
@@ -121,19 +121,19 @@ public class PageController {
 
     @GetMapping("login")
     public ModelAndView login() {
-        return new ModelAndView("/login");
+        return new ModelAndView("login");
     }
 
     @GetMapping("join")
     public ModelAndView join() {
-        return new ModelAndView("/join");
+        return new ModelAndView("join");
     }
 
     @GetMapping("message")
     public ModelAndView message(@PageableDefault(size=10, sort="taaIdx", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<TalkAdminApiResponse> talks = talkAdminApiLogicService.msgList(pageable);
         List<Integer> barNumbers = paginationService.getPaginationBarNumber(pageable.getPageNumber(), talks.getTotalPages());
-        ModelAndView view = new ModelAndView("/message");
+        ModelAndView view = new ModelAndView("message");
         view.addObject("talks", talks);
         System.out.println(talks);
         view.addObject("paginationBarNumbers",barNumbers);
@@ -143,13 +143,13 @@ public class PageController {
     @GetMapping("message/detail/{taaIdx}")
     public ModelAndView messageDetail(@PathVariable Long taaIdx) {
         Header<TalkAdminApiResponse> talk = talkAdminApiLogicService.read(taaIdx);
-        ModelAndView view = new ModelAndView("/message_detail");
+        ModelAndView view = new ModelAndView("message_detail");
         view.addObject("talk", talk.getData());
         return view;
     }
 
     // 로그인 구현
-    @PostMapping(path="/loginOk")  // http://localhost:8888/loginOk
+    @PostMapping(path="/loginOk")  // http://52.79.146.68:8888/loginOk
     public String loginOk(HttpServletRequest request, String adUserid, String adUserpw){
         if(adminLogicService.read(adUserid,adUserpw).getData()!= null) {
             HttpSession session = request.getSession();

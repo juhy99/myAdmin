@@ -31,7 +31,7 @@ public class ReviewLogicService extends BaseService<ReviewApiRequest, ReviewApiR
                 .resaBisName(users.getResAdmin().getResaBisName())
                 .regDate(users.getRegDate())
                 .updateDate(users.getUpdateDate())
-                .prIdx(Profile.builder().prIdx(users.getResIdx()).build())
+                .prIdx(users.getProfile())
                 .build();
         return reviewApiResponse;
     }

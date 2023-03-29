@@ -6,7 +6,7 @@ window.onload = function () {
 let resaBisName = document.getElementById('resa_bis_name').innerText;
 
 function BisDetail() {
-    fetch(`http://localhost:7070/api/restAdmin/detail`, {
+    fetch(`http://52.79.146.68:7070/api/restAdmin/detail`, {
 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -32,7 +32,7 @@ function BisDetail() {
 
 // 식당 정원 테이블에 넣는 로직
 function total() {
-    fetch(`http://localhost:7070/api/restAdmin/total`, {
+    fetch(`http://52.79.146.68:7070/api/restAdmin/total`, {
 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -57,7 +57,7 @@ function total() {
 
 // 편의시설 테이블에 식당이름 등록
 function fac() {
-    fetch(`http://localhost:7070/api/restAdmin/fac`, {
+    fetch(`http://52.79.146.68:7070/api/restAdmin/fac`, {
 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -83,7 +83,7 @@ function fac() {
 
 // 사진테이블에 식당이름 등록
 function photo() {
-    fetch(`http://localhost:7070/api/restAdmin/photo`, {
+    fetch(`http://52.79.146.68:7070/api/restAdmin/photo`, {
 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -110,7 +110,7 @@ function photo() {
 
 // 등록과 동시에 삭제
 function deleteit() {
-    fetch(`http://localhost:7070/api/pending/delete`, {
+    fetch(`http://52.79.146.68:7070/api/pending/delete`, {
 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -136,7 +136,7 @@ function deleteit() {
 
 // 식당정보에 식당이름 등록 로직
 function Bistro() {
-    fetch(`http://localhost:7070/api/restAdmin/bistro`, {
+    fetch(`http://52.79.146.68:7070/api/restAdmin/bistro`, {
 
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -178,7 +178,7 @@ function sendit() {
         return false;
     }
 
-    fetch('http://localhost:7070/api/restAdmin', {
+    fetch('http://52.79.146.68:7070/api/restAdmin', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({

@@ -155,7 +155,7 @@
 <script>
     function deleteRes(resaUserid){
         console.log(resaUserid);
-        fetch(`http://localhost:7070/api/restAdmin/delete/`+resaUserid, {
+        fetch(`http://52.79.146.68:7070/api/restAdmin/delete/`+resaUserid, {
             method: 'DELETE'
         })
             .then((res) => {

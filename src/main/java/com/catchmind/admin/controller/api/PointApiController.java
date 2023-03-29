@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/point")    // http://localhost:8888/api/restAdmin
+@RequestMapping("/api/point")    // http://52.79.146.68:8888/api/restAdmin
 @RequiredArgsConstructor
 public class PointApiController extends CrudController<PointApiRequest, PointApiResponse, Point> {
 

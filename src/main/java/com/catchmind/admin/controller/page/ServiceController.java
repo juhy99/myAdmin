@@ -49,7 +49,7 @@ public class ServiceController {
     // 공지사항 상세
     @GetMapping("/notice/detail/{noIdx}")
     public ModelAndView noticeDetail(@PathVariable Long noIdx) {
-        ModelAndView view = new ModelAndView("/service/notice_detail");
+        ModelAndView view = new ModelAndView("service/notice_detail");
         Header<NoticeApiResponse> api = noticeApiLogicService.read(noIdx);
         view.addObject("detail", api.getData());
         return view;
@@ -59,7 +59,7 @@ public class ServiceController {
     // 공지사항 작성
     @GetMapping("notice/write")
     public ModelAndView noticeWrite() {
-        return new ModelAndView("/service/notice_write");
+        return new ModelAndView("service/notice_write");
     }
 
 
@@ -70,13 +70,13 @@ public class ServiceController {
         List<Integer> barNumbers = paginationService.getPaginationBarNumber(pageable.getPageNumber(), asks.getTotalPages());
         map.addAttribute("asks", asks);
         map.addAttribute("paginationBarNumbers", barNumbers);
-        return "/service/service_center";
+        return "service/service_center";
     }
 
     // 문의 사항 상세
     @GetMapping("/ask/detail/{askIdx}")
     public ModelAndView askDetail(@PathVariable Long askIdx) {
-        ModelAndView view = new ModelAndView("/service/service_center_detail");
+        ModelAndView view = new ModelAndView("service/service_center_detail");
         Header<AskApiResponse> api = askApiLogicService.read(askIdx);
         view.addObject("ask", api.getData());
         return view;
@@ -89,13 +89,13 @@ public class ServiceController {
         List<Integer> barNumbers = paginationService.getPaginationBarNumber(pageable.getPageNumber(), improvements.getTotalPages());
         map.addAttribute("improvements", improvements);
         map.addAttribute("paginationBarNumbers", barNumbers);
-        return "/service/service_imp";
+        return "service/service_imp";
     }
 
     // 개선사항 상세
     @GetMapping("/imp/detail/{impIdx}")
     public ModelAndView improvementDetail(@PathVariable Long impIdx) {
-        ModelAndView view = new ModelAndView("/service/service_imp_detail");
+        ModelAndView view = new ModelAndView("service/service_imp_detail");
         Header<ImpApiResponse> api = impApiLogicService.read(impIdx);
         view.addObject("imp", api.getData());
         return view;

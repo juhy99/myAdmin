@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/comment")    // http://localhost:7070/api/restAdmin
+@RequestMapping("/api/comment")    // http://52.79.146.68:7070/api/restAdmin
 @RequiredArgsConstructor
 public class CommentApiController extends CrudController<CommentApiRequest, CommentApiResponse, Comment> {
     private final CommentApiLogicService commentApiLogicService;

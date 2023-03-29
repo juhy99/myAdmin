@@ -47,7 +47,6 @@ public class ReviewController {
         Header<ReviewApiResponse> review = reviewLogicService.read(revIdx);
         ModelAndView view = new ModelAndView("review/review_detail");
         view.addObject("review", review.getData());
-        System.out.println(review);
         System.out.println(review.getData());
         return view;
     }

@@ -9,7 +9,7 @@ function sendMemo() {
         return false;
     }
 
-    fetch("http://localhost:7070/api/user/memo", {
+    fetch("http://52.79.146.68:7070/api/user/memo", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({

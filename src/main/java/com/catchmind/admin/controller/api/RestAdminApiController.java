@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/restAdmin")    // http://localhost:7070/api/restAdmin
+@RequestMapping("/api/restAdmin")    // http://52.79.146.68:7070/api/restAdmin
 @RequiredArgsConstructor
 public class RestAdminApiController extends CrudController<ResAdminApiRequest, ResAdminApiResponse, ResAdmin> {
     private final RestAdminApiLogicService restAdminApiLogicService;

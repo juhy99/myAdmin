@@ -25,13 +25,13 @@ public class AskApiController extends CrudController<AskApiRequest, AskApiRespon
 
 
     @Override
-    @GetMapping("{askIdx}") // http://localhost:8888/api/user/{id} (get)
+    @GetMapping("{askIdx}") // http://52.79.146.68:8888/api/user/{id} (get)
     public Header<AskApiResponse> read(@PathVariable(name="askIdx") Long id) {
         return askApiLogicService.read(id);
     }
 
     @Override
-    @PostMapping ("{askIdx}") // http://localhost:9999/api/
+    @PostMapping ("{askIdx}") // http://52.79.146.68:9999/api/
     public Header<AskApiResponse> update(@RequestBody Header<AskApiRequest> request) {
         System.out.println("requestgetdata: " + request.getData());
         return askApiLogicService.update(request);

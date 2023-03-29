@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/pending")    // http://localhost:8888/api/restAdmin
+@RequestMapping("/api/pending")    // http://52.79.146.68:8888/api/restAdmin
 @RequiredArgsConstructor
 public class PendingApiController {
 

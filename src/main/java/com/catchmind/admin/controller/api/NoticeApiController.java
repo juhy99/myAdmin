@@ -26,20 +26,20 @@ public class NoticeApiController extends CrudController<NoticeApiRequest,NoticeA
 
 
     @Override
-    @GetMapping("{noIdx}") // http://localhost:8888/api/user/{id} (get)
+    @GetMapping("{noIdx}") // http://52.79.146.68:8888/api/user/{id} (get)
     public Header<NoticeApiResponse> read(@PathVariable(name="noIdx") Long id) {
         return noticeApiLogicService.read(id);
     }
 
     @Override
-    @PostMapping ("/update") // http://localhost:9999/api/  (put)
+    @PostMapping ("/update") // http://52.79.146.68:9999/api/  (put)
     public Header<NoticeApiResponse> update(@RequestBody Header<NoticeApiRequest> request) {
         return noticeApiLogicService.update(request);
     }
 //
 
     @Override
-    @DeleteMapping("/delete/{noIdx}") // http://localhost: (delete)
+    @DeleteMapping("/delete/{noIdx}") // http://52.79.146.68: (delete)
     public Header<NoticeApiResponse> delete(@PathVariable(name="noIdx") Long id) {
         return noticeApiLogicService.delete(id);
     }
