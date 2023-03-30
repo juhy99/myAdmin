@@ -1,6 +1,7 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=catchTable&fontSize=90" />
 
 <h4> 개발 기간 < 2022.12.05 ~ 2023.02.14 > </h4>
+<h4> 배포 사이트 : http://52.79.146.68:7070</h4>
 	
 통합 개발 환경(IDE)
 <div align="LEFT">
